@@ -2,8 +2,9 @@ from collections import defaultdict
 from game_algorithms.pavlov import pavlov
 from game_algorithms.copy_kitten import copy_kitten
 from game_algorithms.grudger import grudger
-from game_algorithms.tit_for_tat_optimistic import tit_for_tat_optimistic
-from game_algorithms.tit_for_tat_pessimistic import tit_for_tat_pessimistic
+from game_of_trust.game_algorithms.tit_for_tat import tit_for_tat_optimistic, tit_for_tat_pessimistic
+from game_algorithms.majority import go_by_majority_optimistic, go_by_majority_pessimistic
+from game_algorithms.random import random
 from constant import SCORING
 
 NUMBER_OF_ROUNDS = 200
@@ -12,17 +13,18 @@ STRATEGIES = [
     tit_for_tat_pessimistic,
     grudger,
     pavlov,
-    copy_kitten
+    copy_kitten,
+    random,
+    go_by_majority_optimistic,
+    go_by_majority_pessimistic,
 ]
 
 def run_tournament():
     leaderboard = defaultdict(int)
 
-    # I want to make sure both strategies plays against each other twice
-    # twice to make sure no one gets the benefit of being the first player
     for strategy_a in STRATEGIES:
         for strategy_b in STRATEGIES:
-            score_a, score_b = run_match(strategy_a, strategy_b, NUMBER_OF_ROUNDS)
+            score_a, _ = run_match(strategy_a, strategy_b, NUMBER_OF_ROUNDS)
 
             leaderboard[strategy_a.__name__] += score_a
 
